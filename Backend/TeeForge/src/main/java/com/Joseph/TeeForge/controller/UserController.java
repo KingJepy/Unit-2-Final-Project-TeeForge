@@ -29,6 +29,12 @@ public class UserController {
         return userRepository.findById(id);
     }
 
+    // create a new user
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+
     // update a user
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
