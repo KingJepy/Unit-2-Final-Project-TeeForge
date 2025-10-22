@@ -16,7 +16,7 @@ public class User {
     private String email;
     private String passwordHash;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Design> designs = new ArrayList<>();
 
     // Getters and Setters
@@ -51,5 +51,12 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public List<Design> getDesigns() {
+        return designs;
+    }
+    public void setDesigns(List<Design> designs) {
+        this.designs = designs;
     }
 }
