@@ -1,4 +1,66 @@
 package com.Joseph.TeeForge.controller;
 
+
+import com.Joseph.TeeForge.model.Design;
+import com.Joseph.TeeForge.repository.DesignRepository;
+import com.Joseph.TeeForge.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/designs")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DesignController {
+
+    @Autowired
+    private DesignRepository designRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // get all designs
+    @GetMapping
+    public List<Design> getAllDesigns() {
+        return designRepository.findAll();
+    }
+
+    // get design by id
+    @GetMapping("/{id}")
+    public Optional<Design> getDesignById(@PathVariable int id) {
+        return designRepository.findById(id);
+    }
+
+    // create a new design
+    @PostMapping
+    public Design createDesign(@RequestBody Design design) {
+        design.setCreatedAt(LocalDateTime.now());
+        design.setUpdatedAt(LocalDateTime.now());
+        return designRepository.save(design);
+    }
+
+    // update a design
+    @PutMapping("/{id}")
+    public Design updateDesign(@PathVariable Integer id, @RequestBody Design updatedDesign) {
+        return designRepository.findById(id).map(design -> {
+            design.setShirtColor(updatedDesign.getShirtColor());
+            design.setUpdatedAt(LocalDateTime.now());
+            return designRepository.save(design);
+        }).orElseGet(() -> {
+            updatedDesign.setDesignId(id);
+            updatedDesign.setCreatedAt(LocalDateTime.now());
+            updatedDesign.setUpdatedAt(LocalDateTime.now());
+            return designRepository.save(updatedDesign);
+        });
+    }
+
+    // delete a design
+    @DeleteMapping("/{id}")
+    public void deleteDesign(@PathVariable Integer id) {
+        designRepository.deleteById(id);
+    }
+
 }

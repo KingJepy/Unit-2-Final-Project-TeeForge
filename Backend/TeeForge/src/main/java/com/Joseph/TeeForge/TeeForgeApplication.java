@@ -15,17 +15,17 @@ public class TeeForgeApplication {
 	}
 
     //testing database
-    @Bean
-    CommandLineRunner run(UserRepository userRepository){
-        return args -> {
-            User user = new User();
-            user.setUsername("testuser");
-            user.setEmail("test@example.com");
-            user.setPasswordHash("hashedpassword");
-            userRepository.save(user);
-
-            System.out.println("User saved: " + user.getUsername());
-        };
-    }
+//    @Bean
+//    CommandLineRunner run(UserRepository userRepository){
+//        return args -> {
+//            User user = new User();
+//            user.setUsername("testuser");
+//            user.setEmail("test@example.com");
+//            user.setPasswordHash("hashedpassword");
+//            userRepository.save(user);
+//
+//            System.out.println("User saved: " + user.getUsername());
+//        };
+//    }
 
 }
