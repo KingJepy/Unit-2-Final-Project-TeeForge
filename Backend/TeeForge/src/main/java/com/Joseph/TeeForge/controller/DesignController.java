@@ -34,6 +34,12 @@ public class DesignController {
         return designRepository.findById(id);
     }
 
+    // get disigns by user id
+    @GetMapping("/user/{userId}")
+    public List<Design> getDesignsByUser(@PathVariable int userId) {
+        return designRepository.findByUser_UserId(userId);
+    }
+
     // create a new design
     @PostMapping
     public Design createDesign(@RequestBody Design design) {
