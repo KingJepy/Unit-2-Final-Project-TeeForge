@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: darkcyan;
+}
+
+.nameInHeader{
+    font-size: 35px;
+}
+
+.headerLinks a {
+    justify-content: flex-end;
+    margin-left: auto;
+    color: Black;
+    font-size: 25px;
+}
+
+.headerLinks a:hover {
+    color: blue;
+}

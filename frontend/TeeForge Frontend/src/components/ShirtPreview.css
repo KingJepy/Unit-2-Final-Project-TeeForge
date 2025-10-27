@@ -1,0 +1,178 @@
+.designer-container {
+  display: flex;
+  flex-direction: row;         
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2rem;
+  background-color: darkslategray;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  flex-wrap: wrap;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 350px;
+  gap: 1.5rem;
+}
+
+.colors,
+.upload-section {
+  font-size: x-large;
+  line-height: 1.8;
+  border: 2px solid black;
+  padding: 1.5rem;
+  background-color: darkcyan;
+  color: black;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.shirt-preview {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px;
+}
+
+.shirt-container {
+  position: relative;
+  width: 400px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shirt-background {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.shirt-background.white { background-color: white; }
+.shirt-background.black { background-color: black; }
+.shirt-background.blue { background-color: blue; }
+.shirt-background.red { background-color: red; }
+
+.design-preview {
+  width: 30%;
+  height: auto;
+  position: absolute;
+  top: 20%; 
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.shirt-outline {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+input[type="file"],
+input[type="radio"] {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.order-link {
+  display: flex;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: darkcyan;
+  color: blue;
+  border-radius: 5px;
+  border: 2px solid black;
+  font-size: x-large;
+  justify-content: center;
+  font-weight: bolder;
+}
+
+.order-link:hover {
+  background-color: lightblue;
+}
+
+@media (max-width: 1024px) {
+  .designer-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem; 
+  }
+
+  .left-panel,
+  .shirt-preview {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls,
+  .upload-section {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: large;
+  }
+
+  .shirt-preview {
+    margin-top: 0;
+    padding-top: 0;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .shirt-container {
+    max-width: 100%;
+    min-width: 280px;
+    aspect-ratio: 3 / 4;
+    height: auto;
+    margin-top: 0;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .designer-container {
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .controls,
+  .upload-section {
+    font-size: medium;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .shirt-container {
+    max-width: 100%;
+  }
+
+  .design-preview {
+    max-width: 40%;
+    top: 22%;
+  }
+}

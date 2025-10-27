@@ -1,0 +1,49 @@
+.about-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+    padding: 2rem;
+    gap: 2rem;
+    background-color: darkslategray;
+}
+
+.about-page p {
+    flex: 1;
+    max-width: 600px;
+    font-size: larger;
+    line-height: 1.6;
+    border: 2px solid black;
+    padding: 1rem;
+    background-color: darkcyan;
+    text-align: center;
+}
+
+.link-to-home {
+    background-color: darkcyan;
+    font-size: large;
+    border: 2px solid black;
+    padding: 1rem;
+}
+
+.link-to-home:hover {
+    color: crimson;
+}
+
+@media (max-width: 1024px) {
+    .about-page p {
+        font-size: large;
+    }
+    .link-to-home {
+        font-size: medium;
+    }
+}
+
+@media (max-width: 600px){
+    .about-page p {
+        font-size: medium;
+    }
+    .link-to-home {
+        font-size: small;
+    }    
+}

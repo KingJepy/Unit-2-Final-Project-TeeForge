@@ -1,0 +1,10 @@
+.footer {
+    display: flex;
+    background-color: darkcyan;
+    align-items: center;
+    justify-content: center;
+}
+
+.feet {
+    margin: 5px;
+}
