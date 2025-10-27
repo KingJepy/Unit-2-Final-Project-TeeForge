@@ -34,13 +34,19 @@ public class ImageController {
         return imageRepository.findById(id);
     }
 
+    // get images by design ID
+    @GetMapping("/design/{designId}")
+    public List<Image> getImagesByDesign(@PathVariable Integer designId) {
+        return imageRepository.findByDesign_DesignId(designId);
+    }
+
     // create new image
     @PostMapping
     public Image createImage(@RequestBody Image image) {
         return imageRepository.save(image);
     }
 
-    // update image\
+    // update image
     @PutMapping("/{id}")
     public Image updateImage(@PathVariable Integer id, @RequestBody Image updatedImage) {
         return imageRepository.findById(id)
