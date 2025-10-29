@@ -8,7 +8,7 @@ function Header () {
             <nav className="headerLinks">
                 <a href="/">Home</a>
                 <a> | </a>
-                <a href="/about">About</a>
+                <a href="/login">Login</a>
                 <a> | </a>
                 <a href="/design">Design</a>
             </nav>

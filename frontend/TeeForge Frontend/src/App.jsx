@@ -20,6 +20,7 @@ function App() {
             <Route path='/about' element={<AboutPage />}/>
             <Route path='/orders' element={<OrderForm />}/>
             <Route path='/design' element={<TShirtDesigner />}/>
+            <Route path='/login' element={<LoginPage />}/>
           </Routes>
       </div>
         <Footer />
