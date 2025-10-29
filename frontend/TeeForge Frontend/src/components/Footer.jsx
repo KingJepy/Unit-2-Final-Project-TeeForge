@@ -7,6 +7,8 @@ function Footer () {
             <p className="feet">TeeForge </p>
             <p className="feet">  |  </p>
             <p className="feet">All rights reserved</p>
+            <p className="feet"> | </p>
+            <a href="/about" className="feet"> About </a>
         </footer>
     );
 };
