@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import { Routes, Route } from 'react-router-dom';
 import OrderForm from './components/OrderForm';
 import TShirtDesigner from './components/ShirtPreview';
+import LoginPage from './components/LoginPage';
 
 
 function App() {
