@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './SavedDesigns.css';
-
-
 
 function SavedDesigns() {
     const [designs, setDesigns] = useState([]);
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     useEffect(() => {
         
@@ -39,6 +39,22 @@ function SavedDesigns() {
         navigate('/design', { state: { design } });
     }
 
+    // If user is not logged in, show message and buttons to log in or register
+    if (!user) {
+        return (
+        <div className="saved-designs-container">
+            <h2>Saved Designs</h2>
+            <div className="not-logged-in-message">
+                <p>You must be logged in to view your saved designs.</p>
+                <div className="auth-buttons">
+                    <button onClick={() => navigate("/login")}>Log In</button>
+                    <button onClick={() => navigate("/register")}>Create Account</button>
+                </div>
+            </div>
+        </div>
+        );
+    }    
+
   return (
     <div className="saved-designs-container">
       <h2>Your Saved Designs</h2>
@@ -51,7 +67,7 @@ function SavedDesigns() {
             onClick={() => handleDesignClick(design)}
           >
             <img
-              src={design.imageUrl}
+              src={design.image}
               alt={design.name}
               className="design-image"
             />

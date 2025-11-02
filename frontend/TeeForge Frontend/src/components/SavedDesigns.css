@@ -81,3 +81,36 @@
     font-size: 1.5rem;
   }
 }
+
+.not-logged-in-message {
+  background-color: darkcyan;
+  color: black;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.auth-buttons button {
+  padding: 0.7rem 1.5rem;
+  background-color: darkslategray;
+  color: black;
+  border: 1px solid black;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s ease-in-out;
+}
+
+.auth-buttons button:hover {
+  background-color: #009b9f;
+}
