@@ -1,0 +1,83 @@
+.saved-designs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: darkslategray;
+  min-height: 100vh;
+  padding: 2rem;
+  color: white;
+}
+
+.saved-designs-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.design-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1000px;
+}
+
+.design-card {
+  background-color: darkcyan;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 200px;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.design-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.design-card h3 {
+  margin-top: 0.5rem;
+}
+
+.design-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid black;
+}
+
+.add-design-button {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  border: 2px dashed white;
+  background-color: transparent;
+  color: white;
+  font-size: 5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-design-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .design-card, .add-design-button {
+    width: 150px;
+    height: 150px;
+  }
+
+  .design-image {
+    height: 120px;
+  }
+
+  .saved-designs-container h2 {
+    font-size: 1.5rem;
+  }
+}
