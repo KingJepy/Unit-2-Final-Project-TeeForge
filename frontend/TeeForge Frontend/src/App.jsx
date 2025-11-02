@@ -9,6 +9,7 @@ import OrderForm from './components/OrderForm';
 import TShirtDesigner from './components/ShirtPreview';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import SavedDesigns from './components/SavedDesigns';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path='/design' element={<TShirtDesigner />}/>
             <Route path='/login' element={<LoginPage />}/>
             <Route path='/register' element={<RegisterPage />}/>
+            <Route path='/saved-designs' element={<SavedDesigns />}/>
           </Routes>
       </div>
         <Footer />

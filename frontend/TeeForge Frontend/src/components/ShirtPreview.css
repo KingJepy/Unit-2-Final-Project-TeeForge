@@ -176,3 +176,29 @@ input[type="radio"] {
     top: 22%;
   }
 }
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.view-saved-link,
+.save-design-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-saved-link:hover,
+.save-design-btn:hover {
+  background-color: #0056b3;
+}
