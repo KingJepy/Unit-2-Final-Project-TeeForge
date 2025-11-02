@@ -1,12 +1,21 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import './ShirtPreview.css';
 
 const shirtColors = ['white', 'black', 'blue', 'red'];
 
 function TShirtDesigner() {
+  const location = useLocation();
   const [shirtColor, setShirtColor] = useState('white');
   const [uploadedImage, setUploadedImage] = useState(null);
+
+  useEffect(() => {
+    if (location.state && location.state.design) {
+      const { color, image } = location.state.design;
+      setShirtColor(color);
+      setUploadedImage(image);
+    }
+  }, [location.state]);
 
   //take the file and create a url and send it to state
   const handleImageUpload = (e) => {
@@ -16,10 +25,15 @@ function TShirtDesigner() {
       setUploadedImage(imageUrl);
     }
   };
+  // placeholder for later 
+  const handleSaveDesign = () => {
+    const designData = { color: shirtColor, image: uploadedImage };
+    console.log('Design saved:', designData);
+    alert('Design saved! (Check console for details)');
+  }
 
   return (
     <div className="designer-container">
-      {/* create buttons that allow you to switch the color */}
       <div className="left-panel">
         <div className="colors">
           <h3>Shirt Colors</h3>
@@ -35,16 +49,27 @@ function TShirtDesigner() {
             </label>
           ))}
         </div>
-        {/* upload your image and use the function */}
+
         <div className="upload-section">
           <h3>Upload Your Design</h3>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
         </div>
-        {/* link to order the shirt */}
-        <Link to="/orders" className='order-link'>Order Your Shirt</Link>
+
+        <div className="button-group">
+          <Link to="/orders" className="order-link">
+            Order Your Shirt
+          </Link>
+
+          <Link to="/saved-designs" className="view-saved-link">
+            View Saved Designs
+          </Link>
+
+          <button onClick={handleSaveDesign} className="save-design-btn">
+            Save Design
+          </button>
+        </div>
       </div>
 
-      {/* create a box and put our blank shirt png inside. then put our new image on top */}
       <div className="shirt-preview">
         <div className="shirt-container">
           <div className={`shirt-background ${shirtColor}`}>

@@ -14,19 +14,21 @@ function SavedDesigns() {
         const dummyData = [
             {
                 id: 1,
-                name: "Sunset Tee",
-                imageUrl: "/images/sample1.png",
-                shirtColor: "blue",
-                imagePosition: { x: 100, y: 150 },
-                imageSize: { width: 120, height: 120 },
+                color: "blue",
+                image: "/example1.png",
+                name: "Cool Blue Design",
             },
             {
                 id: 2,
-                name: "Spider Tee",
-                imageUrl: "/images/sample2.png",
-                shirtColor: "red",
-                imagePosition: { x: 80, y: 130 },
-                imageSize: { width: 100, height: 100 },
+                color: "red",
+                image: "/example2.png",
+                name: "Radical Red Design",
+            },
+            {
+                id: 3,
+                color: "white",
+                image: "/example3.png",
+                name: "Classic White Design",
             },
         ];
 
@@ -59,7 +61,7 @@ function SavedDesigns() {
 
         <button
           className="add-design-button"
-          onClick={() => navigate("/shirtpreview")}
+          onClick={() => navigate("/design")}
           aria-label="Create New Design"
         >
           +
