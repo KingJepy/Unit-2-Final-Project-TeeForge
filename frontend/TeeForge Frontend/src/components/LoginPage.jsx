@@ -59,7 +59,7 @@ function LoginPage() {
               className="register-btn"
               onClick={() => navigate("/register")}
             >
-              Register
+              Sign Up
             </button>
           </div>
         </form>
