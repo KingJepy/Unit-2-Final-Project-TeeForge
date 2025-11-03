@@ -9,31 +9,21 @@ function SavedDesigns() {
     const { user } = useAuth();
 
     useEffect(() => {
-        
-        // Dummy data for saved designs
-        const dummyData = [
-            {
-                id: 1,
-                color: "blue",
-                image: "/example1.png",
-                name: "Cool Blue Design",
-            },
-            {
-                id: 2,
-                color: "red",
-                image: "/example2.png",
-                name: "Radical Red Design",
-            },
-            {
-                id: 3,
-                color: "white",
-                image: "/example3.png",
-                name: "Classic White Design",
-            },
-        ];
+      const fetchDesigns = async () => {
+        if (!user) return; // don't fetch if not logged in
 
-        setDesigns(dummyData);
-    }, []);
+        try {
+          const response = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`);
+          if (!response.ok) throw new Error("Failed to fetch designs");
+          const data = await response.json();
+          setDesigns(data);
+        } catch (error) {
+          console.error("Error fetching designs:", error);
+        }
+      };
+
+      fetchDesigns();
+    }, [user]);
 
     const handleDesignClick = (design) => {
         navigate('/design', { state: { design } });
@@ -62,16 +52,23 @@ function SavedDesigns() {
       <div className="design-grid">
         {designs.map((design) => (
           <button
-            key={design.id}
+            key={design.designId}
             className="design-card"
             onClick={() => handleDesignClick(design)}
           >
-            <img
-              src={design.image}
-              alt={design.name}
-              className="design-image"
-            />
-            <h3>{design.name}</h3>
+            <div
+              className="design-preview"
+              style={{ backgroundColor: design.shirtColor }}
+            >
+              {design.images && design.images[0] && (
+                <img
+                  src={design.images[0].imageUrl}
+                  alt={design.images[0].fileName}
+                  className="design-image"
+                />
+              )}
+            </div>
+            <h3>Design #{design.designId}</h3>
           </button>
         ))}
 
