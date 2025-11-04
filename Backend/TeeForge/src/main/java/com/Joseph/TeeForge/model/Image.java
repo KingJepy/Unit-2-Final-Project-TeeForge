@@ -15,6 +15,8 @@ public class Image {
     @JoinColumn(name = "design_id", nullable = false)
     private Design design;
 
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     private String fileName;
