@@ -15,8 +15,8 @@ function TShirtDesigner() {
   // use saved design if coming from saved designs page
   useEffect(() => {
     if (location.state && location.state.design) {
-      const { color, image } = location.state.design;
-      setShirtColor(color);
+      const { shirtColor, image } = location.state.design;
+      setShirtColor(shirtColor);
       setUploadedImage(image);
     }
   }, [location.state]);
@@ -25,8 +25,11 @@ function TShirtDesigner() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedImage(imageUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -77,7 +80,7 @@ function TShirtDesigner() {
           body: JSON.stringify({
             design: { designId: savedDesign.designId },
             imageUrl: uploadedImage,
-            fileName: uploadedImage.split('/').pop(),
+            fileName: "uploadedImage.png", // placeholder
             placementX: 0,
             placementY: 0
           }),

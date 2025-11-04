@@ -16,14 +16,29 @@ function SavedDesigns() {
     const fetchDesigns = async () => {
       try {
         const res = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`);
+        if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 
         // fetch images for each design
         const designsWithImages = await Promise.all(
           data.map(async (design) => {
-            const imagesRes = await fetch(`http://localhost:8080/api/images/design/${design.designId}`);
-            const images = await imagesRes.json();
-            return { ...design, images };
+            try {
+              const imagesRes = await fetch(`http://localhost:8080/api/images/design/${design.designId}`);
+              if (!imagesRes.ok) return { ...design, images: [] };
+              const images = await imagesRes.json();
+
+              const fixedImages = images.map(img => ({
+                ...img,
+                imageUrl: img.imageUrl.startsWith('data:image')
+                  ? img.imageUrl
+                  : `data:image/png;base64,${img.imageUrl}`
+              }));
+
+              return { ...design, images: fixedImages };
+            } catch (imgError) {
+              console.error(`Error fetching images for design ${design.designId}:`, imgError);
+              return { ...design, images: [] };
+            }
           })
         );
 
@@ -69,12 +84,14 @@ function SavedDesigns() {
             className="design-card"
             onClick={() => handleDesignClick(design)}
           >
-            {design.images && design.images[0] && (
+            {design.images && design.images[0] ? (
               <img
                 src={design.images[0].imageUrl}
-                alt={design.designId}
+                alt={`Design ${design.designId}`}
                 className="design-image"
               />
+            ) : (
+              <div className="no-image-placeholder">No Image</div>
             )}
             <h3>{design.shirtColor} Shirt</h3>
           </button>
