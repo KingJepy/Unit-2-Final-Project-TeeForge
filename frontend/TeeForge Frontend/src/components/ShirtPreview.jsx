@@ -41,35 +41,46 @@ function TShirtDesigner() {
       const now = new Date().toISOString(); 
 
       // save design
-      const designData = {
-        shirtColor: shirtColor,
-        user: { userId: user.userId },
-        createdAt: now,
-        updatedAt: now
-      };
+      // const designData = {
+      //   shirtColor: shirtColor,
+      //   user: { userId: user.userId },
+      //   createdAt: now,
+      //   updatedAt: now
+      // };
 
       const designRes = await fetch("http://localhost:8080/api/designs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(designData),
+        body: JSON.stringify({
+          shirtColor,
+          user: { userId: user.userId },
+          createdAt: now,
+          updatedAt: now
+        }),
       });
 
       const savedDesign = await designRes.json();
 
       // save image if uploaded
       if (uploadedImage) {
-        const imageData = {
-          design: { designId: savedDesign.designId },
-          imageUrl: uploadedImage,
-          fileName: "uploadedImage.png", // placeholder for now
-          placementX: 0,
-          placementY: 0
-        };
+        // const imageData = {
+        //   design: { designId: savedDesign.designId },
+        //   imageUrl: uploadedImage,
+        //   fileName: "uploadedImage.png", // placeholder for now
+        //   placementX: 0,
+        //   placementY: 0
+        // };
 
         await fetch("http://localhost:8080/api/images", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(imageData),
+          body: JSON.stringify({
+            design: { designId: savedDesign.designId },
+            imageUrl: uploadedImage,
+            fileName: uploadedImage.split('/').pop(),
+            placementX: 0,
+            placementY: 0
+          }),
         });
       }
 
