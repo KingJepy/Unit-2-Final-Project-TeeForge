@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import './ShirtPreview.css';
 
 const shirtColors = ['white', 'black', 'blue', 'red'];
@@ -8,12 +9,18 @@ function TShirtDesigner() {
   const location = useLocation();
   const [shirtColor, setShirtColor] = useState('white');
   const [uploadedImage, setUploadedImage] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (location.state && location.state.design) {
-      const { color, image } = location.state.design;
-      setShirtColor(color);
-      setUploadedImage(image);
+      const { color, image, shirtColor: savedColor, images } = location.state.design;
+      setShirtColor(savedColor || color || 'white');
+      
+      if (images && images.length > 0) {
+        setUploadedImage(images[0].imageUrl);
+      } else if (image) {
+        setUploadedImage(image);
+      }
     }
   }, [location.state]);
 
@@ -25,12 +32,43 @@ function TShirtDesigner() {
       setUploadedImage(imageUrl);
     }
   };
+
+
+
   // placeholder for later 
-  const handleSaveDesign = () => {
-    const designData = { color: shirtColor, image: uploadedImage };
-    console.log('Design saved:', designData);
-    alert('Design saved! (Check console for details)');
-  }
+  const handleSaveDesign = async () => {
+    if (!user) {
+      alert("You must be logged in to save designs.");
+      return;
+    }
+
+    const designData = {
+      shirtColor,
+      user: { userId: user.userId },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/designs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(designData),
+      });
+
+      if (response.ok) {
+        const savedDesign = await response.json();
+        console.log("Design saved:", savedDesign);
+        alert("Design saved successfully!");
+      } else {
+        console.error("Failed to save design:", response.status);
+        alert("Failed to save design.");
+      } 
+    }catch (error) {
+      console.error("Error saving design:", error);
+      alert("Error connecting to server.");
+    }
+  };
 
   return (
     <div className="designer-container">
