@@ -1,6 +1,7 @@
 package com.Joseph.TeeForge.controller;
 
 
+import com.Joseph.TeeForge.model.Design;
 import com.Joseph.TeeForge.model.Image;
 import com.Joseph.TeeForge.repository.DesignRepository;
 import com.Joseph.TeeForge.repository.ImageRepository;
@@ -43,6 +44,10 @@ public class ImageController {
     // create new image
     @PostMapping
     public Image createImage(@RequestBody Image image) {
+        if (image.getDesign() != null && image.getDesign().getDesignId() != 0) {
+            Optional<Design> existingDesign = designRepository.findById(image.getDesign().getDesignId());
+            existingDesign.ifPresent(image::setDesign);
+        }
         return imageRepository.save(image);
     }
 
@@ -55,7 +60,7 @@ public class ImageController {
                     image.setFileName(updatedImage.getFileName());
                     image.setPlacementX(updatedImage.getPlacementX());
                     image.setPlacementY(updatedImage.getPlacementY());
-                    return imageRepository.save(updatedImage);
+                    return imageRepository.save(image);
                 })
                 .orElseGet(() -> {
                     updatedImage.setImageId(id);

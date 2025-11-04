@@ -2,6 +2,7 @@ package com.Joseph.TeeForge.controller;
 
 
 import com.Joseph.TeeForge.model.Design;
+import com.Joseph.TeeForge.model.User;
 import com.Joseph.TeeForge.repository.DesignRepository;
 import com.Joseph.TeeForge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,10 @@ public class DesignController {
     // create a new design
     @PostMapping
     public Design createDesign(@RequestBody Design design) {
+        if (design.getUser() != null && design.getUser().getUserId() != 0) {
+            Optional<User> existingUser = userRepository.findById(design.getUser().getUserId());
+            existingUser.ifPresent(design::setUser);
+        }
         design.setCreatedAt(LocalDateTime.now());
         design.setUpdatedAt(LocalDateTime.now());
         return designRepository.save(design);
