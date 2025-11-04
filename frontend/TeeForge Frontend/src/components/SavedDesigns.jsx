@@ -1,59 +1,77 @@
-import { useEffect, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './SavedDesigns.css';
 
 function SavedDesigns() {
-    const [designs, setDesigns] = useState([]);
-    const navigate = useNavigate();
-    const { user } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [designs, setDesigns] = useState([]);
 
-    useEffect(() => {
-        
-        // Dummy data for saved designs
-        const dummyData = [
-            {
-                id: 1,
-                color: "blue",
-                image: "/example1.png",
-                name: "Cool Blue Design",
-            },
-            {
-                id: 2,
-                color: "red",
-                image: "/example2.png",
-                name: "Radical Red Design",
-            },
-            {
-                id: 3,
-                color: "white",
-                image: "/example3.png",
-                name: "Classic White Design",
-            },
-        ];
+  // get all designs for user
+  useEffect(() => {
+    if (!user) return;
 
-        setDesigns(dummyData);
-    }, []);
+    const fetchDesigns = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`);
+        if (!res.ok) throw new Error("Failed to fetch designs");
+        const data = await res.json();
 
-    const handleDesignClick = (design) => {
-        navigate('/design', { state: { design } });
-    }
+        // fetch images for each design
+        const designsWithImages = await Promise.all(
+          data.map(async (design) => {
+            try {
+              const imagesRes = await fetch(`http://localhost:8080/api/images/design/${design.designId}`);
+              if (!imagesRes.ok) return { ...design, images: [] };
+              const images = await imagesRes.json();
 
-    // If user is not logged in, show message and buttons to log in or register
-    if (!user) {
-        return (
-        <div className="saved-designs-container">
-            <h2>Saved Designs</h2>
-            <div className="not-logged-in-message">
-                <p>You must be logged in to view your saved designs.</p>
-                <div className="auth-buttons">
-                    <button onClick={() => navigate("/login")}>Log In</button>
-                    <button onClick={() => navigate("/register")}>Create Account</button>
-                </div>
-            </div>
-        </div>
+              const fixedImages = images.map(img => ({
+                ...img,
+                imageUrl: img.imageUrl.startsWith('data:image')
+                  ? img.imageUrl
+                  : `data:image/png;base64,${img.imageUrl}`
+              }));
+
+              return { ...design, images: fixedImages };
+            } catch (imgError) {
+              console.error(`Error fetching images for design ${design.designId}:`, imgError);
+              return { ...design, images: [] };
+            }
+          })
         );
-    }    
+
+        setDesigns(designsWithImages);
+      } catch (error) {
+        console.error("Error fetching designs:", error);
+      }
+    };
+
+    fetchDesigns();
+  }, [user]);
+
+  // clicking on design navigates to design page with design data
+  const handleDesignClick = (design) => {
+    const image = design.images && design.images.length > 0 ? design.images[0].imageUrl : null;
+    navigate('/design', { state: { design: { color: design.shirtColor, image } } });
+  };
+
+  // user not logged in message
+  if (!user) {
+    return (
+      <div className="saved-designs-container">
+        <h2>Saved Designs</h2>
+        <div className="not-logged-in-message">
+          <p>You must be logged in to view your saved designs.</p>
+          <div className="auth-buttons">
+            <button onClick={() => navigate("/login")}>Log In</button>
+            <button onClick={() => navigate("/register")}>Create Account</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="saved-designs-container">
@@ -62,16 +80,20 @@ function SavedDesigns() {
       <div className="design-grid">
         {designs.map((design) => (
           <button
-            key={design.id}
+            key={design.designId}
             className="design-card"
             onClick={() => handleDesignClick(design)}
           >
-            <img
-              src={design.image}
-              alt={design.name}
-              className="design-image"
-            />
-            <h3>{design.name}</h3>
+            {design.images && design.images[0] ? (
+              <img
+                src={design.images[0].imageUrl}
+                alt={`Design ${design.designId}`}
+                className="design-image"
+              />
+            ) : (
+              <div className="no-image-placeholder">No Image</div>
+            )}
+            <h3>{design.shirtColor} Shirt</h3>
           </button>
         ))}
 

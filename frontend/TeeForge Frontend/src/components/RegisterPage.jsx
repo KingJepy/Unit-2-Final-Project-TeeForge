@@ -12,65 +12,74 @@ function RegisterPage() {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setMessage("Passwords do not match");
             return;
         }
 
-        const newUser = { email, password };
-        register(newUser);
-        navigate("/login");
+        try {
+            const result = await register("", email, password);
+            if (result.success) {
+                navigate("/saved-designs");
+            } else {
+                setMessage(result.message || "Registration failed");
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            setMessage("An error occurred during registration");
+        }
     };
 
 
+    return (
+        <div className="register-container">
+            <div className="register-box">
+                <h2>Register New User</h2>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
 
-    return <div className="register-container">
-        <div className="register-box">
-            <h2>Register New User</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                    <input
+                        type="password"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                />
+                    {message && <div className="message">{message}</div>}
 
-                {message && <div className="message">{message}</div>}
+                    <div className="buttons">
+                        <button type="submit" className="register-btn">Confirm</button>
+                        <button
+                            type="button"
+                            className="login-btn"
+                            onClick={() => navigate("/login")}
+                        >
+                            Back to Login
+                        </button>
+                    </div>
 
-                <div className="buttons">
-                    <button type="submit" className="register-btn">Confirm</button>
-                    <button
-                        type="button"
-                        className="login-btn"
-                        onClick={() => navigate("/login")}
-                    >
-                        Back to Login
-                    </button>
-                </div>
+                </form>
 
-            </form>
-
+            </div>
         </div>
-    </div>
+    );
 
 }
 

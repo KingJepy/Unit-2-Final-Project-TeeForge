@@ -12,15 +12,13 @@ function LoginPage() {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate login process
-        if (email === "test@teeforge.com" && password === "password123") {
-            const userData = { email };
-            login(userData);
-            navigate("/mydesigns");
+        const result = await login(email, password);
+        if (result.success) {
+          navigate("/saved-designs");
         } else {
-            setMessage("Invalid email or password");
+          setMessage(result.message);
         }
     };
 
