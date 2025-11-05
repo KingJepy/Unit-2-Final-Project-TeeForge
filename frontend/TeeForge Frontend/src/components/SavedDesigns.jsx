@@ -57,6 +57,27 @@ function SavedDesigns() {
     navigate('/design', { state: { design: { color: design.shirtColor, image } } });
   };
 
+  // delete a design
+  const handleDeleteDesign = async (designId) => {
+    if (!window.confirm("Are you sure you want to delete this design?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/designs/${designId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setDesigns((prev) => prev.filter((d) => d.designId !== designId));
+      } else {
+        alert("Failed to delete design.");
+      }
+    } catch (error) {
+      console.error("Error deleting design:", error);
+      alert("An error occurred while deleting the design.");
+    }
+  }
+
+
   // user not logged in message
   if (!user) {
     return (
@@ -79,22 +100,30 @@ function SavedDesigns() {
 
       <div className="design-grid">
         {designs.map((design) => (
-          <button
-            key={design.designId}
-            className="design-card"
-            onClick={() => handleDesignClick(design)}
-          >
-            {design.images && design.images[0] ? (
-              <img
-                src={design.images[0].imageUrl}
-                alt={`Design ${design.designId}`}
-                className="design-image"
-              />
-            ) : (
-              <div className="no-image-placeholder">No Image</div>
-            )}
-            <h3>{design.shirtColor} Shirt</h3>
-          </button>
+          <div key={design.designId} className="design-card-wrapper">
+            <button
+              className="design-card"
+              onClick={() => handleDesignClick(design)}
+            >
+              {design.images && design.images[0] ? (
+                <img
+                  src={design.images[0].imageUrl}
+                  alt={`Design ${design.designId}`}
+                  className="design-image"
+                />
+              ) : (
+                <div className="no-image-placeholder">No Image</div>
+              )}
+              <h3>{design.shirtColor} Shirt</h3>
+            </button>
+
+            <button
+              className="delete-design-button"
+              onClick={() => handleDeleteDesign(design.designId)}
+            >
+              Delete
+            </button>
+          </div>
         ))}
 
         <button

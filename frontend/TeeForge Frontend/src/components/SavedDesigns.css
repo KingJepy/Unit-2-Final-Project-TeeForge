@@ -67,6 +67,28 @@
   transform: scale(1.05);
 }
 
+.delete-design-button {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-top: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-design-button:hover {
+  background-color: #5a0a0a;
+}
+
+.design-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (max-width: 600px) {
   .design-card, .add-design-button {
     width: 150px;
