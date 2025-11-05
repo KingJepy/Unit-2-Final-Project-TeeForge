@@ -54,7 +54,17 @@ function SavedDesigns() {
   // clicking on design navigates to design page with design data
   const handleDesignClick = (design) => {
     const image = design.images && design.images.length > 0 ? design.images[0].imageUrl : null;
-    navigate('/design', { state: { design: { color: design.shirtColor, image } } });
+    const imageId = design.images && design.images.length > 0 ? design.images[0].imageId : null;
+    navigate('/design', { 
+      state: { 
+        design: {
+          shirtColor: design.shirtColor,
+          image,
+          designId: design.designId,
+          imageId,
+        }
+      }
+    });
   };
 
   // delete a design

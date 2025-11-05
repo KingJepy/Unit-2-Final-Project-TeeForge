@@ -11,13 +11,24 @@ function TShirtDesigner() {
 
   const [shirtColor, setShirtColor] = useState('white');
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [designId, setDesignId] = useState(null);
+  const [imageId, setImageId] = useState(null);
 
   // use saved design if coming from saved designs page
   useEffect(() => {
     if (location.state && location.state.design) {
-      const { shirtColor, image } = location.state.design;
+      const {
+        shirtColor,
+        image,
+        designId: savedDesignId,
+        imageId: savedImageId,
+      } = location.state.design;
+
       setShirtColor(shirtColor);
       setUploadedImage(image);
+
+      if (savedDesignId) setDesignId(savedDesignId);
+      if (savedImageId) setImageId(savedImageId);
     }
   }, [location.state]);
 
@@ -33,64 +44,98 @@ function TShirtDesigner() {
     }
   };
 
-  // sdave design to bacend
+  // save or update design to backend
   const handleSaveDesign = async () => {
     if (!user) {
-      alert("You must be logged in to save a design.");
+      alert('You must be logged in to save a design.');
       return;
     }
 
     try {
-      const now = new Date().toISOString(); 
+      const now = new Date().toISOString();
 
-      // save design
-      // const designData = {
-      //   shirtColor: shirtColor,
-      //   user: { userId: user.userId },
-      //   createdAt: now,
-      //   updatedAt: now
-      // };
+      const designData = {
+        shirtColor,
+        user: { userId: user.userId },
+        createdAt: now,
+        updatedAt: now,
+      };
 
-      const designRes = await fetch("http://localhost:8080/api/designs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          shirtColor,
-          user: { userId: user.userId },
-          createdAt: now,
-          updatedAt: now
-        }),
-      });
+      let savedDesign;
 
-      const savedDesign = await designRes.json();
+      // update existing design
+      if (designId) {
+        const designRes = await fetch(
+          `http://localhost:8080/api/designs/${designId}`,
+          {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(designData),
+          }
+        );
 
-      // save image if uploaded
-      if (uploadedImage) {
-        // const imageData = {
-        //   design: { designId: savedDesign.designId },
-        //   imageUrl: uploadedImage,
-        //   fileName: "uploadedImage.png", // placeholder for now
-        //   placementX: 0,
-        //   placementY: 0
-        // };
+        if (!designRes.ok) throw new Error('Failed to update design');
+        savedDesign = await designRes.json();
+        console.log('Design updated:', savedDesign);
+      } else {
+        // create new design
+        const designRes = await fetch('http://localhost:8080/api/designs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(designData),
+        }); 
 
-        await fetch("http://localhost:8080/api/images", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            design: { designId: savedDesign.designId },
-            imageUrl: uploadedImage,
-            fileName: "uploadedImage.png", // placeholder
-            placementX: 0,
-            placementY: 0
-          }),
-        });
+        if (!designRes.ok) throw new Error('Failed to save design');
+        savedDesign = await designRes.json();
+        setDesignId(savedDesign.designId);
+        console.log('Design saved:', savedDesign);
       }
 
-      alert("Design saved successfully!");
+      // save or update image
+      if (uploadedImage) {
+        const imageData = {
+          design: { designId: savedDesign.designId },
+          imageUrl: uploadedImage,
+          fileName: `design_${savedDesign.designId}.png`,
+          placementX: 0,
+          placementY: 0,
+        };
+
+        if (imageId) {
+          const imageRes = await fetch(
+            `http://localhost:8080/api/images/${imageId}`,
+            {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(imageData),
+            }
+          );
+
+          if (!imageRes.ok) throw new Error('Failed to update image');
+          const updatedImage = await imageRes.json();
+          console.log('Image updated:', updatedImage);
+        } else {
+          const imageRes = await fetch('http://localhost:8080/api/images', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(imageData),
+          });
+
+          if (!imageRes.ok) throw new Error('Failed to save image');
+          const savedImage = await imageRes.json();
+          setImageId(savedImage.imageId);
+          console.log('Image saved:', savedImage);
+        }
+      }
+
+      alert(
+        designId
+          ? 'Design updated successfully!'
+          : 'Design saved successfully!'
+      );
     } catch (error) {
-      console.error("Error saving design:", error);
-      alert("Failed to save design.");
+      console.error('Error saving design:', error);
+      alert('Failed to save design. Check console for details.');
     }
   };
 
