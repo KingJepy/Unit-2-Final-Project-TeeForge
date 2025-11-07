@@ -48,6 +48,10 @@ public class ImageController {
             Optional<Design> existingDesign = designRepository.findById(image.getDesign().getDesignId());
             existingDesign.ifPresent(image::setDesign);
         }
+
+        image.setWidth(image.getWidth());
+        image.setHeight(image.getHeight());
+
         return imageRepository.save(image);
     }
 
@@ -60,10 +64,18 @@ public class ImageController {
                     image.setFileName(updatedImage.getFileName());
                     image.setPlacementX(updatedImage.getPlacementX());
                     image.setPlacementY(updatedImage.getPlacementY());
+
+                    image.setWidth(updatedImage.getWidth());
+                    image.setHeight(updatedImage.getHeight());
+
                     return imageRepository.save(image);
                 })
                 .orElseGet(() -> {
                     updatedImage.setImageId(id);
+
+                    updatedImage.setWidth(updatedImage.getWidth());
+                    updatedImage.setHeight(updatedImage.getHeight());
+
                     return imageRepository.save(updatedImage);
                 });
     }
