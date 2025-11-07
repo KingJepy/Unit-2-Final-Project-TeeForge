@@ -19,6 +19,8 @@ function TShirtDesigner() {
   const [imagePosition, setImagePosition] = useState({ x: 100, y: 100 });
   const [imageSize, setImageSize] = useState({ width: 150, height: 150 });
 
+  const [showCenterGuide, setShowCenterGuide] = useState(false);
+
   // use saved design if coming from saved designs page
   useEffect(() => {
     if (location.state && location.state.design) {
@@ -63,6 +65,17 @@ function TShirtDesigner() {
       reader.readAsDataURL(file);
     }
   };
+
+  const checkCenter = (imageX, imageWidth) => {
+  const containerWidth = 400; 
+  const imageCenter = imageX + imageWidth / 2;
+  const containerCenter = containerWidth / 2;
+  const tolerance = 10; 
+
+  setShowCenterGuide(Math.abs(imageCenter - containerCenter) <= tolerance);
+  };
+
+
 
   // save or update design to backend
   const handleSaveDesign = async () => {
@@ -161,6 +174,9 @@ function TShirtDesigner() {
     }
   };
 
+
+
+
   return (
     <div className="designer-container">
       <div className="left-panel">
@@ -202,18 +218,25 @@ function TShirtDesigner() {
       <div className="shirt-preview">
         <div className="shirt-container">
           <div className={`shirt-background ${shirtColor}`}>
+            {showCenterGuide && <div className='center-line'></div>}
+
             {uploadedImage && (
               <Rnd
                 size={imageSize}
                 position={imagePosition}
                 bounds="parent"
-                onDragStop={(e, d) => setImagePosition({ x: d.x, y: d.y })}
+                onDragStart={() => setShowCenterGuide(true)}
+                onDragStop={(e, d) => {
+                  setImagePosition({ x: d.x, y: d.y });
+                  checkCenter(d.x, imageSize.width)
+                  setShowCenterGuide(false);
+                }}
                 onResizeStop={(e, direction, ref, delta, position) => {
-                  setImageSize({
-                    width: parseInt(ref.style.width, 10),
-                    height: parseInt(ref.style.height, 10),
-                  });
+                  const newWidth = parseInt(ref.style.width, 10);
+                  const newHeight = parseInt(ref.style.height, 10);
+                  setImageSize({ width: newWidth, height: newHeight });
                   setImagePosition(position);
+                  checkCenter(position.x, newWidth);
                 }}
               >
                 <img
