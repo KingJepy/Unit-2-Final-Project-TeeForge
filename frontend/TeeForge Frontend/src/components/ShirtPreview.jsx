@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './ShirtPreview.css';
+import { Rnd } from 'react-rnd';
 
 const shirtColors = ['white', 'black', 'blue', 'red'];
 
@@ -14,21 +15,40 @@ function TShirtDesigner() {
   const [designId, setDesignId] = useState(null);
   const [imageId, setImageId] = useState(null);
 
+  // state for drag and drop funtionality
+  const [imagePosition, setImagePosition] = useState({ x: 100, y: 100 });
+  const [imageSize, setImageSize] = useState({ width: 150, height: 150 });
+
   // use saved design if coming from saved designs page
   useEffect(() => {
     if (location.state && location.state.design) {
       const {
         shirtColor,
-        image,
+        imageUrl,
         designId: savedDesignId,
         imageId: savedImageId,
+        placementX,
+        placementY,
+        width,
+        height,
       } = location.state.design;
 
       setShirtColor(shirtColor);
-      setUploadedImage(image);
+      setUploadedImage(imageUrl || null);
 
       if (savedDesignId) setDesignId(savedDesignId);
       if (savedImageId) setImageId(savedImageId);
+
+      if (placementX !== undefined && placementY!== undefined) {
+        setImagePosition({ x: placementX, y : placementY});
+      }
+
+      if (width && height) {
+        setImageSize({ 
+          width: Number(width), 
+          height: Number(height), 
+        });
+      }
     }
   }, [location.state]);
 
@@ -97,8 +117,10 @@ function TShirtDesigner() {
           design: { designId: savedDesign.designId },
           imageUrl: uploadedImage,
           fileName: `design_${savedDesign.designId}.png`,
-          placementX: 0,
-          placementY: 0,
+          placementX: imagePosition.x,
+          placementY: imagePosition.y,
+          width: Math.round(imageSize.width),
+          height: Math.round(imageSize.height),
         };
 
         if (imageId) {
@@ -172,7 +194,7 @@ function TShirtDesigner() {
           </Link>
 
           <button onClick={handleSaveDesign} className="save-design-btn">
-            Save Design
+            {designId ? 'Update Design' : 'Save Design'}
           </button>
         </div>
       </div>
@@ -181,11 +203,30 @@ function TShirtDesigner() {
         <div className="shirt-container">
           <div className={`shirt-background ${shirtColor}`}>
             {uploadedImage && (
-              <img
-                src={uploadedImage}
-                alt="Uploaded"
-                className="design-preview"
-              />
+              <Rnd
+                size={imageSize}
+                position={imagePosition}
+                bounds="parent"
+                onDragStop={(e, d) => setImagePosition({ x: d.x, y: d.y })}
+                onResizeStop={(e, direction, ref, delta, position) => {
+                  setImageSize({
+                    width: parseInt(ref.style.width, 10),
+                    height: parseInt(ref.style.height, 10),
+                  });
+                  setImagePosition(position);
+                }}
+              >
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded"
+                  className="design-preview"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </Rnd>
             )}
           </div>
           <img
