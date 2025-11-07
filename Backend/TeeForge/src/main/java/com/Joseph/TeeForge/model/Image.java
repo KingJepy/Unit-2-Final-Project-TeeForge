@@ -24,7 +24,27 @@ public class Image {
     private int placementX;
     private int placementY;
 
+    private int width;
+    private int height;
+
     // Getters and Setters
+
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public int getImageId() {
         return imageId;
