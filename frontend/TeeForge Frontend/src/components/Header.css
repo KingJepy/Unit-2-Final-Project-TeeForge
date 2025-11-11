@@ -20,3 +20,15 @@
 .headerLinks a:hover {
     color: blue;
 }
+
+.logout-btn {
+  background-color: darkcyan;
+  border: none;
+  color: black;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  color: blue;
+}
