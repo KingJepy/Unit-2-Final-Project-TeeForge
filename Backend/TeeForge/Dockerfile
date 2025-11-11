@@ -30,6 +30,6 @@ ENV SPRING_DATASOURCE_URL=jdbc:postgresql://$DB_HOST:5432/teeforge_db
 ENV SPRING_DATASOURCE_USERNAME=$DB_USER
 ENV SPRING_DATASOURCE_PASSWORD=$DB_PASS
 
-# Start the Spring Boot app
-CMD ["./mvnw", "spring-boot:run"]
+# Run the built Spring Boot JAR directly (avoids JAVA_HOME issues)
+CMD ["java", "-jar", "target/TeeForge-0.0.1-SNAPSHOT.jar"]
 
