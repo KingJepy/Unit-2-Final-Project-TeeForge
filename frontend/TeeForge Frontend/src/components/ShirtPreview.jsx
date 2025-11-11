@@ -119,7 +119,7 @@ function TShirtDesigner() {
         setMessage('Design updated successfully!');
         setMessageType('success');
       } else {
-        const designRes = await fetch('${BASE_URL}/designs', {
+        const designRes = await fetch(`${BASE_URL}/designs`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(designData),
@@ -154,7 +154,7 @@ function TShirtDesigner() {
           if (!imageRes.ok) throw new Error('Failed to update image');
           await imageRes.json();
         } else {
-          const imageRes = await fetch('${BASE_URL}/images', {
+          const imageRes = await fetch(`${BASE_URL}/images`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(imageData),
