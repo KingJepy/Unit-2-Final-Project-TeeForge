@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "https://teeforge-frontend.vercel.app")
+@CrossOrigin(origins = "https://teeforge-frontend-4fmuui4lh-kingjepys-projects.vercel.app")
 public class UserController {
 
     @Autowired
