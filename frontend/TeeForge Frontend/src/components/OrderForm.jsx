@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import './OrderForm.css';
 import OrderItem from "./OrderItem";
 import MyButton from "./ReusableButton";
+import'./PopUpMessages.css';
 
 
 function OrderForm () {
@@ -90,7 +91,7 @@ function OrderForm () {
             return;
         }
 
-        setMessage("Thank You For Your Business. An Email Will Be Sent Out Shortly");
+        setMessage("Thank You For Your Business. When the order is comfirmed you will receive an email confirmation");
         setMessageType("success");
     }
 

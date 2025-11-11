@@ -9,6 +9,16 @@ function SavedDesigns() {
   const navigate = useNavigate();
   const [designs, setDesigns] = useState([]);
 
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+
+  useEffect(() => {
+    if (message){
+      const timer = setTimeout(() => setMessage(''), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   // get all designs for user
   useEffect(() => {
     if (!user) return;
