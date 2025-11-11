@@ -18,7 +18,7 @@ function LoginPage() {
         if (result.success) {
           navigate("/saved-designs");
         } else {
-          setMessage(result.message || "Imvalid email or password");
+          setMessage(result.message || "Invalid email or password");
         }
     };
 

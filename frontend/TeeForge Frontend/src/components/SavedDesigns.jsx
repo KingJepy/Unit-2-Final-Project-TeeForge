@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './SavedDesigns.css';
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function SavedDesigns() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ function SavedDesigns() {
 
     const fetchDesigns = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`);
+        const res = await fetch(`${BASE_URL}/designs/user/${user.userId}`);
         if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 
@@ -33,7 +35,7 @@ function SavedDesigns() {
         const designsWithImages = await Promise.all(
           data.map(async (design) => {
             try {
-              const imagesRes = await fetch(`http://localhost:8080/api/images/design/${design.designId}`);
+              const imagesRes = await fetch(`${BASE_URL}/images/design/${design.designId}`);
               if (!imagesRes.ok) return { ...design, images: [] };
               const images = await imagesRes.json();
 
@@ -92,7 +94,7 @@ function SavedDesigns() {
     if (!window.confirm("Are you sure you want to delete this design?")) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/designs/${designId}`, {
+      const response = await fetch(`${BASE_URL}/designs/${designId}`, {
         method: 'DELETE',
       });
 
