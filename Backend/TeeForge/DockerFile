@@ -1,0 +1,30 @@
+# Use official OpenJDK 17 base image
+FROM openjdk:17-jdk-slim
+
+# Install curl & tput (Render uses minimal Linux images)
+RUN apt-get update && apt-get install -y curl ncurses-bin && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy Maven wrapper and project files
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+# Make Maven wrapper executable
+RUN chmod +x mvnw
+
+# Build the project (produces target/*.jar)
+RUN ./mvnw clean package -DskipTests
+
+# Expose port
+EXPOSE 8080
+
+# Set JAVA_HOME (matches environment variable)
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Command to run the app
+CMD ["./mvnw", "spring-boot:run"]
