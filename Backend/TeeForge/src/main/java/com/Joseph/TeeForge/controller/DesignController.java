@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/designs")
-@CrossOrigin(origins = "https://teeforge-frontend-4fmuui4lh-kingjepys-projects.vercel.app")
+@CrossOrigin(origins = "https://teeforge-frontend-3cel52jnz-kingjepys-projects.vercel.app/")
 public class DesignController {
 
     @Autowired

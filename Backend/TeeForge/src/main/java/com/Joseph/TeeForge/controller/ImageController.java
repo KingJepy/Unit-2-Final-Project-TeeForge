@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/images")
-@CrossOrigin(origins = "https://teeforge-frontend-4fmuui4lh-kingjepys-projects.vercel.app")
+@CrossOrigin(origins = "https://teeforge-frontend-3cel52jnz-kingjepys-projects.vercel.app/")
 public class ImageController {
 
     @Autowired
