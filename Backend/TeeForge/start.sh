@@ -1,12 +1,13 @@
 #!/bin/bash
 # start.sh - Launch Spring Boot app on Render
 
-# Exit immediately if a command exits with non-zero status
+# Exit immediately if a command exits with non-zero status except tput/colors.sh
 set -e
 
-# Install tput for Render's colors.sh
-apt-get update
-apt-get install -y ncurses-bin
+# Avoid breaking if tput/colors.sh fails
+set +e
+source /home/render/colors.sh 2>/dev/null || true
+set -e
 
 # Set JAVA_HOME if not already set
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
