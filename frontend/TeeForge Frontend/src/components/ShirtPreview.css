@@ -12,12 +12,21 @@
   flex-wrap: wrap;
 }
 
+.panels-wrapper {
+  display: flex; 
+  gap: 2rem;
+  justify-content: center; 
+  width: 100%;
+  max-width: 1200px;
+}
+
 .left-panel {
   display: flex;
   flex-direction: column;
   flex: 1;
   max-width: 350px;
   gap: 1.5rem;
+  margin-right: 2rem;
 }
 
 .colors,
@@ -92,7 +101,7 @@ input[type="radio"] {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
   background-color: darkcyan;
-  color: blue;
+  color: rgb(4, 4, 31);
   border-radius: 5px;
   border: 2px solid black;
   font-size: x-large;
@@ -140,6 +149,10 @@ input[type="radio"] {
   transform: translateX(-75%);
   z-index: 2; 
   pointer-events: none; 
+}
+
+.message-bottom {
+  align-self: center;
 }
 
 @media (max-width: 1024px) {

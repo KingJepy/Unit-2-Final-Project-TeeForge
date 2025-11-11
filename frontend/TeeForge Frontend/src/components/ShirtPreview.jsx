@@ -171,88 +171,72 @@ function TShirtDesigner() {
 
   return (
     <div className="designer-container">
-      {message && (
-        <div className={`message ${messageType} fade-in`}>{message}</div>
-      )}
 
-      <div className="left-panel">
-        <div className="colors">
-          <h3>Shirt Colors</h3>
-          {shirtColors.map((color) => (
-            <label key={color}>
-              <input
-                type="radio"
-                value={color}
-                checked={shirtColor === color}
-                onChange={() => setShirtColor(color)}
-              />
-              {color}
-            </label>
-          ))}
-        </div>
+      <div className="panels-wrapper">
 
-        <div className="upload-section">
-          <h3>Upload Your Design</h3>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-        </div>
-
-        <div className="button-group">
-          <Link to="/orders" className="order-link">
-            Order Your Shirt
-          </Link>
-
-          <Link to="/saved-designs" className="view-saved-link">
-            View Saved Designs
-          </Link>
-
-          <button onClick={handleSaveDesign} className="save-design-btn">
-            {designId ? 'Update Design' : 'Save Design'}
-          </button>
-        </div>
-      </div>
-
-      <div className="shirt-preview">
-        <div className="shirt-container">
-          <div className={`shirt-background ${shirtColor}`}>
-            {showCenterGuide && <div className="center-line"></div>}
-
-            {uploadedImage && (
-              <Rnd
-                size={imageSize}
-                position={imagePosition}
-                bounds="parent"
-                onDragStart={() => setShowCenterGuide(true)}
-                onDragStop={(e, d) => {
-                  setImagePosition({ x: d.x, y: d.y });
-                  checkCenter(d.x, imageSize.width);
-                  setShowCenterGuide(false);
-                }}
-                onResizeStop={(e, direction, ref, delta, position) => {
-                  const newWidth = parseInt(ref.style.width, 10);
-                  const newHeight = parseInt(ref.style.height, 10);
-                  setImageSize({ width: newWidth, height: newHeight });
-                  setImagePosition(position);
-                  checkCenter(position.x, newWidth);
-                }}
-              >
-                <img
-                  src={uploadedImage}
-                  alt="Uploaded"
-                  className="design-preview"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
+        <div className="left-panel">
+          <div className="colors">
+            <h3>Shirt Colors</h3>
+            {shirtColors.map((color) => (
+              <label key={color}>
+                <input
+                  type="radio"
+                  value={color}
+                  checked={shirtColor === color}
+                  onChange={() => setShirtColor(color)}
                 />
-              </Rnd>
-            )}
+                {color}
+              </label>
+            ))}
           </div>
-          <img
-            src="/blank-shirt.png"
-            alt="blank-shirt"
-            className="shirt-outline"
-          />
+
+          <div className="upload-section">
+            <h3>Upload Your Design</h3>
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+          </div>
+          <div className="button-group">
+            {message && (
+              <div className={`message ${messageType} fade-in message-bottom`}>
+                {message}
+              </div>
+            )}
+            <Link to="/orders" className="order-link">Order Your Shirt</Link>
+            <Link to="/saved-designs" className="order-link">View Saved Designs</Link>
+            <button onClick={handleSaveDesign} className="order-link">
+              {designId ? 'Update Design' : 'Save Design'}
+            </button>
+          </div>
+        </div>
+        <div className="shirt-preview">
+          <div className="shirt-container">
+            <div className={`shirt-background ${shirtColor}`}>
+              {showCenterGuide && <div className="center-line"></div>}
+
+              {uploadedImage && (
+                <Rnd
+                  size={imageSize}
+                  position={imagePosition}
+                  bounds="parent"
+                  onDragStart={() => setShowCenterGuide(true)}
+                  onDragStop={(e, d) => {
+                    setImagePosition({ x: d.x, y: d.y });
+                    checkCenter(d.x, imageSize.width);
+                    setShowCenterGuide(false);
+                  }}
+                  onResizeStop={(e, direction, ref, delta, position) => {
+                    const newWidth = parseInt(ref.style.width, 10);
+                    const newHeight = parseInt(ref.style.height, 10);
+                    setImageSize({ width: newWidth, height: newHeight });
+                    setImagePosition(position);
+                    checkCenter(position.x, newWidth);
+                  }}
+                >
+                  <img src={uploadedImage} alt="Uploaded" className="design-preview" />
+                </Rnd>
+              )}
+            </div>
+            <img src="/blank-shirt.png" alt="blank-shirt" className="shirt-outline" />
+          </div>
         </div>
       </div>
     </div>
