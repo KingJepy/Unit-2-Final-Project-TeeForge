@@ -1,5 +1,5 @@
 # Use official OpenJDK 17 base image (slim variant)
-FROM openjdk:17.0.8-jdk-slim
+FROM openjdk:17-jdk-slim-buster
 
 # Install required packages: Maven, tput (via ncurses-bin), curl
 RUN apt-get update && \
