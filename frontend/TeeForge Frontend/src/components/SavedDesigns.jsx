@@ -9,6 +9,16 @@ function SavedDesigns() {
   const navigate = useNavigate();
   const [designs, setDesigns] = useState([]);
 
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+
+  useEffect(() => {
+    if (message){
+      const timer = setTimeout(() => setMessage(''), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   // get all designs for user
   useEffect(() => {
     if (!user) return;
@@ -53,15 +63,25 @@ function SavedDesigns() {
 
   // clicking on design navigates to design page with design data
   const handleDesignClick = (design) => {
-    const image = design.images && design.images.length > 0 ? design.images[0].imageUrl : null;
-    const imageId = design.images && design.images.length > 0 ? design.images[0].imageId : null;
+
+    if (!design) return;
+
+    const image = design.images && design.images.length > 0 ? design.images[0] : null;
+
     navigate('/design', { 
       state: { 
         design: {
           shirtColor: design.shirtColor,
-          image,
           designId: design.designId,
-          imageId,
+
+          imageId: image ? image.imageId : null,
+          imageUrl: image ? image.imageUrl : null,
+
+          placementX: image ? image.placementX : 0,
+          placementY: image ? image.placementY : 0,
+          width: image ? image.width || 200 : 200,
+          height: image ? image.height || 200 : 200,
+
         }
       }
     });

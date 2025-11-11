@@ -18,7 +18,7 @@ function LoginPage() {
         if (result.success) {
           navigate("/saved-designs");
         } else {
-          setMessage(result.message);
+          setMessage(result.message || "Imvalid email or password");
         }
     };
 
@@ -51,7 +51,7 @@ function LoginPage() {
                 }}>{message}</div>}
 
           <div className="login-buttons">
-            <button type="submit" className="login-btn">Login</button>
+          
             <button
               type="button"
               className="register-btn"
@@ -59,6 +59,7 @@ function LoginPage() {
             >
               Sign Up
             </button>
+            <button type="submit" className="login-btn">Login</button>
           </div>
         </form>
       </div>
