@@ -1,13 +1,21 @@
 #!/bin/bash
-# Ensure JAVA_HOME is set correctly
-export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/adoptopenjdk-17-hotspot-amd64}
+# start.sh - Launch Spring Boot app on Render
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Set JAVA_HOME if not already set
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
 
-echo "Using JAVA_HOME=$JAVA_HOME"
-java -version
+# Move to the directory containing pom.xml
+cd TeeForge
 
-# Clean and package the Spring Boot app
+# Make sure mvnw is executable
+chmod +x mvnw
+
+# Clean and build the project
 ./mvnw clean package
 
-# Run the Spring Boot app
-java -jar target/TeeForge-0.0.1-SNAPSHOT.jar
+# Run the Spring Boot application
+./mvnw spring-boot:run
