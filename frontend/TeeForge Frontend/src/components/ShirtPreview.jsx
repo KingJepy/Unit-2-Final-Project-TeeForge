@@ -5,7 +5,7 @@ import './ShirtPreview.css';
 import './PopUpMessages.css';
 import { Rnd } from 'react-rnd';
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const shirtColors = ['white', 'black', 'blue', 'red'];
 
