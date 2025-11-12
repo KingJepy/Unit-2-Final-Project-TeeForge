@@ -25,7 +25,13 @@ function SavedDesigns() {
 
     const fetchDesigns = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`);
+        const res = await fetch(`http://localhost:8080/api/designs/user/${user.userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
         if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 
