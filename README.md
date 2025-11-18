@@ -60,6 +60,8 @@ Built with a **React + Vite frontend**, a **Spring Boot backend**, and a **MySQL
 
 ## 🖼️ Key Visuals <a name="visuals"></a>
 
+<a href="https://docs.google.com/presentation/d/18Fiy_WYWXxA1lTHqXNqMvQq-sNH5pOCrP96_JJ4d10Y/edit?usp=sharing" alt="Front-End Wireframe">Front-End Wireframe<a>
+
 <details>
 <summary>Click to expand key visuals</summary>
 
@@ -104,7 +106,7 @@ Built with a **React + Vite frontend**, a **Spring Boot backend**, and a **MySQL
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Installation & Setup <a name="installation"></a>
 
 To run **TeeForge** locally, you need:
 
@@ -168,6 +170,8 @@ The **Frontend** runs at:
 
 ---
 ## 🗄️ Database Structure (ERD) <a name="database"></a>
+
+<a href="https://docs.google.com/spreadsheets/d/1Iq7HPh3YymtPvfa0gLqCZLUHLvp5dMZLpuvUXydnElY/edit?usp=sharing" alt="Link to ERD">Link to ERD<a>
 
 ### USERS
 | Field        | Type   | Description                 |
